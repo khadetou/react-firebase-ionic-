@@ -1,31 +1,20 @@
 import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react"
 import React, { useMemo } from "react"
-import AppContext from "./my-context"
-
+import AuthContext from "./my-context"
+import { useHistory } from "react-router"
 
 // Language: typescript
 const Tab1 = () => {
-    const { sharedValue, setSharedValue } = React.useContext(AppContext);
-    const renderContents = useMemo(() => {
-        console.log("Tab 1 render contents" + new Date());
-        return (
-            <>
-                <div>{JSON.stringify(sharedValue)}</div>
-                <IonButton
-                    onClick={() => setSharedValue({
-                        value: new Date().getTime(),
-                        changedBy: "tab1"
-                    })}
-                >UPDATE VALUE</IonButton>
-                <IonButton
-                    onClick={() => setSharedValue({
-                        value: null,
-                        changedBy: "tab1"
-                    })}
-                >RESET VALUE</IonButton>
-            </>
-        );
-    }, [sharedValue, setSharedValue]);
+    const history = useHistory();
+    const { logout, authValue } = React.useContext(AuthContext);
+    // const renderContents = useMemo(() => {
+    //     console.log("Tab 1 render contents" + new Date());
+    //     return (
+    //         <>
+
+    //         </>
+    //     );
+    // }, []);
 
     console.log("Render tab1")
     return (
@@ -37,7 +26,11 @@ const Tab1 = () => {
             </IonHeader>
             <IonContent className="ion-padding">
                 <h2>TAB ONE</h2>
-                {renderContents}
+                <div>{JSON.stringify(authValue.user)}</div>
+
+                <IonButton
+                    onClick={() => { logout(); history.replace("/login"); }}
+                >LOGOUT</IonButton>
             </IonContent>
         </IonPage>
     )
